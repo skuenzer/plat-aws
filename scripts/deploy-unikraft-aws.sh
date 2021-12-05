@@ -223,7 +223,8 @@ echo -n "Registering image on the cloud.........."
 log_pause
 # This echo maintains the formatting
 echo ""
-aws ec2 register-image --image-location ${BUCKET}/${IMG}.manifest.xml --architecture ${ARCH} --name ${NAME} --virtualization-type paravirtual
+amiID=`aws ec2 register-image --region ${REGION} --image-location ${BUCKET}/${IMG}.manifest.xml --architecture ${ARCH} --name ${NAME} --virtualization-type paravirtual | awk 'FNR == 2 {print $2 }' | tr -d '"'`
+echo "AMI ID: ${insID}"
 log_resume
 echo -e "${GREEN}[OK]${END}"
 
