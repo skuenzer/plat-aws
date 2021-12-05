@@ -170,11 +170,11 @@ echo -e "${GREEN}[OK]${END}"
 # Create the image disk
 ${SUDO} mkdir -p ${MNT_DIR}
 rm -f ${IMG}
-echo -n "Creating Disk Image (4MB)...............";
+echo -n "Creating Disk Image (64MB)..............";
 log_pause
 # This echo maintains the formatting
 echo ""
-dd if=/dev/zero of=${TMP_DIR}/${IMG} bs=1M count=4
+dd if=/dev/zero of=${TMP_DIR}/${IMG} bs=1M count=64
 ${SUDO} mke2fs -F -j ${TMP_DIR}/${IMG}
 ${SUDO} mount -o loop ${TMP_DIR}/${IMG} ${MNT_DIR}
 ${SUDO} mkdir -p ${MNT_DIR}/boot/grub
