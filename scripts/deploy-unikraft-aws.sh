@@ -40,7 +40,7 @@ function usage () {
    echo ""
    echo -e "${UNDERLINE}Optional Args:${END}"
    echo "<name>: 	  Image name to use on the cloud (default: ${NAME})"
-   echo "<bucket>: 	  AWS S3 bucket name (default: ${BUCKET})"
+   echo "<bucket>: 	  AWS S3 bucket name (default: ${BUCKET}). NOTE: Do not use hyphen (-)"
    echo "<region>: 	  AWS EC2 region to register AMI (default: ${REGION})"
    echo "<instance-type>:  Specify the type of the machine on which you wish to deploy the kernel (default: ${INSTYPE}) "
    echo "<-v>: 		  Turns on verbose mode"
