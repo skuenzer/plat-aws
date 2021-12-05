@@ -229,21 +229,22 @@ log_resume
 echo -e "${GREEN}[OK]${END}"
 
 clean
-echo ""
-echo "To run the instance on AWS, use following command-"
-echo -e "${GRAY_BG}insID=\`aws ec2 run-instances --region ${REGION} --image-id <ami-ID> --count 1 --instance-type ${INSTYPE} | awk 'FNR == 2 {print $2}'\`${END}"
-insID="<insID>"
-else
-    echo -n "Starting the instance on the cloud......"
+
+if [ $S = true ]; then
+	echo -n "Starting the instance on the cloud......"
 	log_pause
 	# This echo maintains the formatting
 	echo ""
 	# Start an instance on the cloud
-	insID=`ec2-run-instances ${amiID} --region ${REGION} -k ukraft-key-eu -t ${INSTYPE} | awk 'FNR == 2 {print $2}'`
+	insID=`aws ec2 run-instances --region ${REGION} --image-id ${amiID} --count 1 --instance-type ${INSTYPE} | grep -e '[[:space:]]*"\?InstanceId"\?[[:space:]]*:' | awk '{print $2}' | tr -d '",'`
 	echo "AWS Instance ID: ${insID}"
 	log_resume
 	echo -e "${GREEN}[OK]${END}"
-	clean
+else
+	echo ""
+	echo "To run the instance on AWS, use following command-"
+	echo -e "${GRAY_BG}aws ec2 run-instances --region ${REGION} --image-id ${amiID} --count 1 --instance-type ${INSTYPE}${END}"
+	insID="<insID>"
 fi
 echo ""
 echo -e "${UNDERLINE}NOTE:${END}"
