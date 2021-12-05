@@ -92,6 +92,9 @@ log_resume
 echo -e "${GREEN}[OK]${END}"
 }
 
+fsize() {
+	stat --printf='%s' "${1}"
+}
 
 # Process the arguments given to script by user
 while getopts "vshk:I:n:p:b:r:i:" opt; do
@@ -166,15 +169,23 @@ fi
 log_resume
 echo -e "${GREEN}[OK]${END}"
 
+# Detect required disk image size
+KSIZE=`fsize "${UNIKERNEL}"`
+ISIZE=0
+if [ ! -z "$INITRD" ]; then
+	ISIZE=`fsize "${INITRD}"`
+fi
+# Sum of kernel and initrd size plus 4 MBs as extra buffer
+DSIZE_MB=$(( ((KSIZE + ISIZE) / (1024 * 1024)) + 4 ))
 
 # Create the image disk
 ${SUDO} mkdir -p ${MNT_DIR}
 rm -f ${IMG}
-echo -n "Creating Disk Image (64MB)..............";
+echo -n "Creating Disk Image (${DSIZE_MB} MB).............";
 log_pause
 # This echo maintains the formatting
 echo ""
-dd if=/dev/zero of=${TMP_DIR}/${IMG} bs=1M count=64
+dd if=/dev/zero of=${TMP_DIR}/${IMG} bs=1M count=${DSIZE_MB}
 ${SUDO} mke2fs -F -j ${TMP_DIR}/${IMG}
 ${SUDO} mount -o loop ${TMP_DIR}/${IMG} ${MNT_DIR}
 ${SUDO} mkdir -p ${MNT_DIR}/boot/grub
