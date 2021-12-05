@@ -249,9 +249,9 @@ fi
 echo ""
 echo -e "${UNDERLINE}NOTE:${END}"
 echo "1) To see the AWS system console log, use following command-"
-echo -e "${GRAY_BG}aws ec2 get-console-output --instance-id <ins ID> --query Output --output text --region ${REGION}${END}"
+echo -e "${GRAY_BG}aws ec2 get-console-output --instance-id ${insID} --query Output --output text --region ${REGION}${END}"
 echo "2) AWS takes some time to initialise the instance and start the booting process"
 # AWS changes required
-echo "3) Don't forget to customise this with a security group, as the
-echo default one won't let any inbound traffic in."
+echo "3) Don't forget to customise this with a security group, as the"
+echo "   default one won't let any inbound traffic in."
 echo ""
